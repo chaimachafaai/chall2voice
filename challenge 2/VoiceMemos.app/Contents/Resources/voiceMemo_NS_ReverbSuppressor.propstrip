@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Boxes</key>
+	<array>
+		<dict>
+			<key>Name</key>
+			<string>ReverbSuppressor</string>
+			<key>Properties</key>
+			<array>
+				<dict>
+					<key>Element</key>
+					<integer>0</integer>
+					<key>Number</key>
+					<integer>5100</integer>
+					<key>Path</key>
+					<string>/Volumes/Data/Users/sarthakkhanal/repos/algorithmdevelopment/VoiceMemoGraphTools_v1/DSPGraphAndTuningStrip/aufx-drvb-appl.plist</string>
+					<key>Scope</key>
+					<integer>0</integer>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

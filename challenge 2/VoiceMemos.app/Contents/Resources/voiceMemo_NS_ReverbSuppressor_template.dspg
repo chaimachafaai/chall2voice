@@ -1,0 +1,68 @@
+graphName "voiceMemo_NS_ReverbSuppressor"
+
+in  input0
+out output0
+
+; -------------------------------------------------------------------------
+; Define the input sample rate
+; Define block size at which to run the graph
+; Ideally sz has to be in the ballpark of 10ms, i.e., sz = 10E-3 * fs
+; This is currently commented out to make the graph more flexible
+; Uncomment it if you want the graph to support only a fixed sample rate and block size
+; -------------------------------------------------------------------------
+samplerate_def_token
+size_def_token
+
+; -------------------------------------------------------------------------
+; Stream Format Definitions
+; -------------------------------------------------------------------------
+format FREQ (freq [fs] 1 [sz])
+format TIME (     [fs] 1 [sz])
+
+;--------------------------------------------------------------------------
+; FFT / IFFT Boxes Definition
+;--------------------------------------------------------------------------
+box     ffft                fft                 1 1
+box     ifft                fft                 1 1
+
+;--------------------------------------------------------------------------
+; DSP Boxes Definitions
+;--------------------------------------------------------------------------
+box     NoiseSuppressor                  (aufx noise_supression_imp_token appl)    1 2
+box     NoiseSuppressorDead              dead                1 0
+
+box     ReverbSuppressor                 (aufx drvb appl)    1 2
+box     ReverbSuppressorDead             dead                1 0
+
+;--------------------------------------------------------------------------
+; Combiner Definitions
+;--------------------------------------------------------------------------
+box     MinGain                         amin                 2 1
+box     MinGainApply                    amul                 2 1
+
+;--------------------------------------------------------------------------
+; Process
+;--------------------------------------------------------------------------
+
+; take the fft of the input signal
+wire    input0                          ffft                 TIME
+
+; send input to NoiseSuppressor and send suppressed channel to dead (we will only use NoiseSuppressor gains)
+wire    ffft                            NoiseSuppressor      FREQ
+wire    (NoiseSuppressor 0)             NoiseSuppressorDead  FREQ
+
+; send input to ReverbSuppressor and send suppressed channel to dead (we will only use ReverbSuppressor gains)
+wire    ffft                            ReverbSuppressor     FREQ
+wire    (ReverbSuppressor 0)            ReverbSuppressorDead FREQ
+    
+; combine gains from NoiseSuppressor and ReverbSuppressor by taking the minima over the individual gain vectors
+wire 	(NoiseSuppressor 1) 		    (MinGain 0)          TIME
+wire 	(ReverbSuppressor 1)            (MinGain 1)          TIME
+
+; apply the min gain computed above to the fft of the input signal
+wire 	(MinGain 0)                     (MinGainApply 0)     TIME
+wire 	ffft                            (MinGainApply 1)     FREQ
+
+; take the inverst fft of the gain applied signal and send to the output
+wire    (MinGainApply 0)                ifft                 FREQ
+wire    ifft                            output0              TIME
