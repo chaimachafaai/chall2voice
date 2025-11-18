@@ -45,6 +45,8 @@ recording screenshot :
 
 https://github.com/user-attachments/assets/ddf0a4a0-a784-4b5c-96c8-7e5c1235a68f
 
+keynote link 
+https://www.icloud.com/keynote/067E2UaHIPEVZuOj_yUj7ogWw#VoiceMemo_Presentation
 
-
-transcribing audio on iOS devices. Its simple interaction model and automatic transcription capabilities make it ideal for quick notes, interviews, reminders, and voice-based productivity workflows.
+transcribing audio on iOS devices. Its simple interaction model and automatic transcription capabilities make it ideal for quick notes, interviews, reminders, and voice-based productivity 
+workflows.
